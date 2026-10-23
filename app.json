@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Oyu",
+    "slug": "oyu",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#C2303A"
+    },
+    "platforms": ["android"],
+    "android": {
+      "package": "kz.oyu.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#C2303A"
+      }
+    },
+    "plugins": ["expo-font"]
+  }
+}

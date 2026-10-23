@@ -1,0 +1,22 @@
+{
+  "name": "oyu-app",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "setup": "npm install && npx expo install react react-native react-native-svg react-native-safe-area-context @react-native-async-storage/async-storage expo-font expo-status-bar @expo-google-fonts/nunito @expo-google-fonts/unbounded && npx expo install --dev @types/react typescript",
+    "start": "expo start",
+    "android": "expo start --android",
+    "typecheck": "tsc --noEmit",
+    "selftest": "tsx scripts/selftest.ts",
+    "build:apk": "eas build --platform android --profile preview"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "expo": "latest",
+    "react-native-url-polyfill": "^2.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  }
+}
