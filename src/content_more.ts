@@ -1,0 +1,405 @@
+// Modules 3–5: the remaining 23 ornaments described in the book (chapter 1).
+// Every text is [KAZ, RUS, ENG]. Meanings are only those the source describes; legends are marked as such.
+import type { Module, Ornament, Task, Tri } from './content';
+
+const CAT: Record<string, Tri> = {
+  zoo: ['Зооморфтық', 'Зооморфный', 'Zoomorphic'],
+  plant: ['Өсімдік', 'Растительный', 'Floral'],
+  sky: ['Аспан денелері', 'Космогонический', 'Celestial'],
+  water: ['Жер-суға байланысты', 'Природный (земля и вода)', 'Landscape (earth & water)'],
+  home: ['Тұрмыстық', 'Бытовой', 'Household'],
+  geo: ['Геометриялық', 'Геометрический', 'Geometric'],
+};
+
+/** Category question: correct group placed at position `at` among three. */
+function cat(kz: string, tr: string, right: string, wrong: [string, string], at: number): Task {
+  const o = [CAT[wrong[0]], CAT[wrong[1]]];
+  o.splice(at, 0, CAT[right]);
+  return {
+    t: 'category',
+    q: [`${kz} қай топқа жатады?`, `К какой группе относится ${kz}?`, `Which group is ${tr} in?`],
+    o: o as [Tri, Tri, Tri],
+    a: at,
+  };
+}
+
+export const MORE_ORN: Record<string, Ornament> = {
+  /* ---------- Module 3: plants ---------- */
+  'PLT-001': {
+    kz: 'Бұтақ', tr: 'Butaq', gl: ['бұтақ', 'ветка', 'Branch'], art: 'butaq',
+    d: ['Бұтақ — шет оюдың өсімдік өрнегі. Ол кілем мен тұскиізде, қыз-келіншектер мен жас балалардың киімінде кездеседі.',
+        'Ветка — растительный мотив каймы. Её вышивают на коврах и тұскиізах, на одежде девушек, молодых женщин и детей.',
+        'The branch is a floral border motif. It appears on carpets and wall hangings and on the clothes of girls, young women and children.'],
+    s: ['Өсіп-өну, ұрпақтың үзілмеуі: бұтағы жан-жаққа тараған әулет.', 'Рост и продолжение рода: семья, ветви которой расходятся во все стороны.', 'Growth and an unbroken line: a family whose branches spread in every direction.'],
+    tasks: [
+      { t: 'meaning', q: ['Бұтақ оюы нені тілейді?', 'Чего желает узор бұтақ?', 'What does butaq wish for?'],
+        o: [['Жолаушыға жол', 'Доброй дороги путнику', 'A safe road for a traveller'], ['Ұрпақтың өсіп-өнуін', 'Роста и продолжения рода', 'Growth and an unbroken family line'], ['Мол жаңбыр', 'Обильного дождя', 'Plenty of rain']], a: 1 },
+      cat('Бұтақ', 'Butaq', 'plant', ['zoo', 'geo'], 0),
+      { t: 'context', q: ['Бұтақ оюы кімнің киімінде жиі кездеседі?', 'На чьей одежде часто встречается бұтақ?', 'Whose clothes often carry butaq?'],
+        o: [['Батырлардың сауытында', 'На доспехах воинов', "On warriors' armour"], ['Қыз-келіншектер мен балалардың киімінде', 'На одежде девушек, молодых женщин и детей', 'On the clothes of girls, young women and children'], ['Малшылардың етігінде', 'На сапогах пастухов', "On herders' boots"]], a: 1 },
+    ],
+  },
+  'PLT-002': {
+    kz: 'Бүршік', tr: 'Bürshik', gl: ['бүршік', 'почка', 'Bud'], art: 'burshik',
+    d: ['Бүршік көбіне шет оюда қолданылады. Оны кілем мен тұскиізге, төсек жапқыш пен орамалдың ортасына, балалар киіміне салған.',
+        'Почку чаще всего помещают в кайму. Её выкладывают на коврах и тұскиізах, в центре покрывал и платков, на детской одежде.',
+        'The bud mostly sits in borders. It appears on carpets and wall hangings, in the centre of bedspreads and headscarves, and on children\'s clothes.'],
+    s: ['Гүлдеген балалық шақ, асқақ арман мен бақытты өмірге ұмтылыс.', 'Расцветающее детство, высокая мечта и стремление к счастливой жизни.', 'A blossoming childhood, high dreams and a reach for a happy life.'],
+    tasks: [
+      { t: 'meaning', q: ['Бүршік нені бейнелейді?', 'Что олицетворяет бүршік?', 'What does bürshik stand for?'],
+        o: [['Гүлдеген балалық шақ пен үміт', 'Расцветающее детство и надежду', 'A blossoming childhood and hope'], ['Қартаюды', 'Старость', 'Old age'], ['Қысты', 'Зиму', 'Winter']], a: 0 },
+      cat('Бүршік', 'Bürshik', 'plant', ['sky', 'home'], 0),
+      { t: 'context', q: ['Бүршік оюы қайда жиі салынады?', 'Где часто размещают бүршік?', 'Where is bürshik often placed?'],
+        o: [['Қазанның түбіне', 'На дно котла', 'On the bottom of a cauldron'], ['Пышақтың сабына', 'На рукоять ножа', 'On a knife handle'], ['Кілем мен тұскиізге, балалар киіміне', 'На ковры, тұскиізы и детскую одежду', "On carpets, wall hangings and children's clothes"]], a: 2 },
+    ],
+  },
+  'PLT-003': {
+    kz: 'Бесжапырақ', tr: 'Besjapyraq', gl: ['бесжапырақ', 'пять лепестков', 'Five Leaves'], art: 'besjapyraq',
+    d: ['Бес жапырақты өсімдік оюы бұйымның ортасына немесе шетінің айналасына орналасады. Ол тұскиіз бен кілемде, әйелдер киімі мен орамалдың жиегінде кездеседі.',
+        'Растительный узор из пяти листьев ставят в центр изделия или пускают вокруг края. Он встречается на тұскиізах и коврах, на женской одежде и по краю платков.',
+        'This five-leaved floral motif sits in the centre of an object or runs round its edge. It appears on wall hangings and carpets, women\'s clothing and the edges of headscarves.'],
+    s: ['Әйел бұйымдарының сәні: орамал мен киімді көмкеретін өрнек.', 'Украшение женских вещей: узор, обрамляющий платок и одежду.', "An adornment of women's things: a pattern that frames headscarves and clothes."],
+    tasks: [
+      { t: 'meaning', q: ['Бесжапырақ кімнің бұйымдарын көбірек безендірген?', 'Чьи вещи чаще всего украшал бесжапырақ?', 'Whose belongings did besjapyraq adorn most?'],
+        o: [['Аңшылардың', 'Охотников', "Hunters'"], ['Әйелдердің: киім мен орамал', 'Женщин: одежду и платки', "Women's: clothing and headscarves"], ['Ұсталардың', 'Кузнецов', "Blacksmiths'"]], a: 1 },
+      cat('Бесжапырақ', 'Besjapyraq', 'plant', ['water', 'zoo'], 0),
+      { t: 'context', q: ['Бесжапырақ бұйымның қай жеріне орналасады?', 'Куда на изделии помещают бесжапырақ?', 'Where on an object is besjapyraq placed?'],
+        o: [['Ортасына немесе шетінің айналасына', 'В центр или по краю', 'In the centre or around the edge'], ['Тек астарына', 'Только на подкладку', 'Only on the lining'], ['Тек тұтқасына', 'Только на ручку', 'Only on the handle']], a: 0 },
+    ],
+  },
+  'PLT-004': {
+    kz: 'Гүл', tr: 'Gül', gl: ['гүл', 'цветок', 'Flower'], art: 'gul',
+    d: ['Шеберлер табиғаттағы гүлдерді жинақтап, ырғақты әрі ықшам өрнекке айналдырған. Гүл оюы бұйымның бетін бос орын қалдырмай толтырады: тұскиіз, сүлгі, қоржын.',
+        'Мастера обобщали живые цветы и превращали их в ритмичный, собранный узор. Цветок заполняет поверхность без пустот: так украшали тұскиізы, полотенца и қоржыны.',
+        'Artisans distilled living flowers into a rhythmic, compact pattern. The flower motif fills a surface without gaps, as on wall hangings, towels and saddlebags.'],
+    s: ['Табиғаттың тірлігі үйге көшкендей: өрнек алаңды түгел толтырады.', 'Жизнь природы, перенесённая в дом: узор заполняет всё поле.', 'The life of nature brought indoors: the pattern fills the whole field.'],
+    tasks: [
+      { t: 'meaning', q: ['Гүл оюының ерекшелігі неде?', 'В чём особенность узора гүл?', 'What is special about the gül motif?'],
+        o: [['Бетті бос орын қалдырмай толтырады', 'Заполняет поверхность без пустот', 'It fills the surface without gaps'], ['Тек бір түспен салынады', 'Его делают только одним цветом', 'It is made in one colour only'], ['Тек қаруға салынады', 'Его ставят только на оружие', 'It goes only on weapons']], a: 0 },
+      cat('Гүл', 'Gül', 'plant', ['sky', 'geo'], 0),
+      { t: 'context', q: ['Гүл оюымен қандай бұйымдарды безендірген?', 'Что украшали узором гүл?', 'What was decorated with gül?'],
+        o: [['Ер-тұрманды', 'Сёдла', 'Saddles'], ['Тұскиізді, сүлгіні, қоржынды', 'Тұскиізы, полотенца, қоржыны', 'Wall hangings, towels, saddlebags'], ['Қазанды', 'Котлы', 'Cauldrons']], a: 1 },
+    ],
+  },
+  'PLT-005': {
+    kz: 'Раушан гүл', tr: 'Raushan gül', gl: ['раушан гүл', 'роза', 'Rose'], art: 'raushan',
+    d: ['Раушан гүл — өсімдік оюы. Оны қыз баланың бас және кеуде киімдеріне салады, кілем мен орамалда, тұскиіз бен төсек жапқыштың жиегінде де кездеседі.',
+        'Роза — растительный узор. Её вышивают на головных уборах и нагрудной одежде девочек, а ещё на коврах, платках и по краю тұскиізов и покрывал.',
+        "The rose is a floral motif. It is stitched on girls' headwear and chest garments, and also on carpets, headscarves and the edges of wall hangings and bedspreads."],
+    s: ['Қыз баланың сәні: оның бас киімі мен кеудешесінің өрнегі.', 'Украшение девочки: узор её головного убора и нагрудника.', "A girl's adornment: the pattern of her headwear and bodice."],
+    tasks: [
+      { t: 'meaning', q: ['Раушан гүл кімнің киімімен тығыз байланысты?', 'С чьей одеждой прежде всего связана раушан гүл?', 'Whose clothing is raushan gül most tied to?'],
+        o: [['Қыз баланың', 'Девочки', "A girl's"], ['Шопанның', 'Пастуха', "A shepherd's"], ['Аңшының', 'Охотника', "A hunter's"]], a: 0 },
+      cat('Раушан гүл', 'Raushan gül', 'plant', ['home', 'zoo'], 0),
+      { t: 'context', q: ['Раушан гүл тұскиіздің қай жеріне салынады?', 'Где на тұскиізе обычно идёт раушан гүл?', 'Where on a wall hanging does raushan gül usually go?'],
+        o: [['Жиегіне', 'По краю', 'Along the edge'], ['Тек астарына', 'Только на изнанку', 'Only on the back'], ['Еш жеріне', 'Никуда', 'Nowhere']], a: 0 },
+    ],
+  },
+  'PLT-006': {
+    kz: 'Төртгүл', tr: 'Törtgül', gl: ['төртгүл', 'четыре цветка', 'Four Flowers'], art: 'tortgul',
+    d: ['Төрт гүл төрт жаққа қарап тұрған өсімдік оюы. Ол қыз баланың төсегінің үстіне ілінетін тұскиізде, төсек жапқышта, орамалдың ортасында кездеседі.',
+        'Растительный узор из четырёх цветков, обращённых на четыре стороны. Его вышивают на тұскиізе над постелью девушки, на покрывалах, в центре платков.',
+        "A floral motif of four flowers facing four ways. It is stitched on the wall hanging above a girl's bed, on bedspreads and in the centre of headscarves."],
+    s: ['Дүниенің төрт жағы және төрт жағың түгел шаттыққа толсын деген тілек.', 'Четыре стороны света и пожелание, чтобы радость была со всех сторон.', 'The four directions, and a wish for joy on every side.'],
+    tasks: [
+      { t: 'meaning', q: ['Төртгүл қандай тілек білдіреді?', 'Какое пожелание несёт төртгүл?', 'What wish does törtgül carry?'],
+        o: [['Жолың болсын', 'Доброго пути', 'A safe journey'], ['Төрт жағың түгел шаттыққа толсын', 'Радости со всех четырёх сторон', 'Joy on all four sides'], ['Малың көп болсын', 'Большого стада', 'A large herd']], a: 1 },
+      cat('Төртгүл', 'Törtgül', 'plant', ['sky', 'geo'], 0),
+      { t: 'context', q: ['Төртгүл қай тұскиізде кездеседі?', 'На каком тұскиізе встречается төртгүл?', 'Which wall hanging carries törtgül?'],
+        o: [['Қыз баланың төсегінің үстіндегі', 'Над постелью девушки', "The one above a girl's bed"], ['Есік алдындағы', 'У входной двери', 'The one by the door'], ['Ошақ басындағы', 'У очага', 'The one by the hearth']], a: 0 },
+    ],
+  },
+  'PLT-007': {
+    kz: 'Айша бибі', tr: 'Aisha bibi', gl: ['Айша бибі', 'Айша-биби', 'Aisha Bibi'], art: 'aishabibi',
+    d: ['Айша бибі — ғашықтарға арналған өсімдік оюы. Ол аңыз-дастаннан туған: түрі бесжапырақ оюына жақын.',
+        'Айша-биби — растительный узор, посвящённый влюблённым. Он родился из предания-дастана и по форме близок к бесжапырақ.',
+        'Aisha Bibi is a floral motif dedicated to lovers. It was born from a legend and is close in form to besjapyraq.'],
+    s: ['Айтуынша, мұратына жете алмаған ғашықтардың сыры: ашылмаған гүл.', 'По преданию — тайна влюблённых, не достигших своей мечты: нераскрывшийся бутон.', 'Legend has it: the secret of lovers who never reached their dream — a flower that never opened.'],
+    tasks: [
+      { t: 'meaning', q: ['Айша бибі оюы кімге арналған?', 'Кому посвящён узор Айша-биби?', 'Who is the Aisha Bibi motif dedicated to?'],
+        o: [['Батырларға', 'Воинам', 'Warriors'], ['Ғашықтарға', 'Влюблённым', 'Lovers'], ['Саяхатшыларға', 'Путешественникам', 'Travellers']], a: 1 },
+      cat('Айша бибі', 'Aisha bibi', 'plant', ['zoo', 'water'], 0),
+      { t: 'context', q: ['Айша бибі оюы неден туған?', 'Откуда пришёл узор Айша-биби?', 'Where does the Aisha Bibi motif come from?'],
+        o: [['Аңыз-дастаннан', 'Из предания-дастана', 'From a legend'], ['Тиын суретінен', 'С рисунка монеты', 'From a coin design'], ['Қару таңбасынан', 'С клейма оружия', "From a weapon's mark"]], a: 0 },
+    ],
+  },
+
+  /* ---------- Module 4: sky and water ---------- */
+  'SKY-001': {
+    kz: 'Темірқазық', tr: 'Temirqazyq', gl: ['Темірқазық', 'Полярная звезда', 'Pole Star'], art: 'temirqazyq',
+    d: ['Темірқазық жұлдызы — аспан денелерінің оюы. Бұл оюды сәулет өнерінде ағаштан ою ойғанда, бақтың ішіне хауыз жасағанда қолданған.',
+        'Полярная звезда — небесный узор. Его вырезали по дереву в архитектуре и использовали, когда устраивали водоём в саду.',
+        'The Pole Star is a celestial motif. It was carved in wood in architecture and used when a pool was laid out in a garden.'],
+    s: ['Жолаушылар мен керуеншілердің жұлдызы — адаспайтын бағыт.', 'Звезда путников и караванщиков — направление, с которого не собьёшься.', 'The star of travellers and caravans: a direction you never lose.'],
+    tasks: [
+      { t: 'meaning', q: ['Темірқазық кімдердің жұлдызы саналған?', 'Чьей звездой считалась Темірқазық?', 'Whose star was Temirqazyq?'],
+        o: [['Аңшылардың', 'Охотников', "Hunters'"], ['Шопандардың', 'Пастухов', "Shepherds'"], ['Жолаушылар мен керуеншілердің', 'Путников и караванщиков', 'Travellers and caravans']], a: 2 },
+      cat('Темірқазық', 'Temirqazyq', 'sky', ['plant', 'home'], 0),
+      { t: 'context', q: ['Темірқазық оюы сәулет өнерінде қалай жасалған?', 'Как узор Темірқазық использовали в архитектуре?', 'How was Temirqazyq used in architecture?'],
+        o: [['Ағаштан ойып', 'Вырезали по дереву', 'Carved in wood'], ['Кестемен тігіп', 'Вышивали', 'Embroidered'], ['Темірден соғып', 'Ковали из железа', 'Forged in iron']], a: 0 },
+    ],
+  },
+  'SKY-002': {
+    kz: 'Жұлдыз', tr: 'Juldyz', gl: ['жұлдыз', 'звезда', 'Star'], art: 'juldyz',
+    d: ['Жұлдыз оюы аспан шырақтарын шартты түрде бейнелейді. Ол негізінен кілемнің орта тұсында кездеседі және қыз жасауының бір бөлігі болған.',
+        'Звезда условно изображает небесные светила. Её ставят в основном в центр ковра, и она была частью приданого девушки.',
+        "The star is a stylised image of the heavenly lights. It mostly sits in the centre of a carpet and was part of a girl's dowry."],
+    s: ['«Жұлдызың жоғары болсын!» деген ана тілегі.', 'Материнское пожелание: «Пусть твоя звезда будет высоко!»', 'A mother\'s wish: "May your star stand high!"'],
+    tasks: [
+      { t: 'meaning', q: ['Жұлдыз оюы қандай тілектен туған?', 'Из какого пожелания родился узор жұлдыз?', 'Which wish gave rise to the star motif?'],
+        o: [['«Жұлдызың жоғары болсын!»', '«Пусть твоя звезда будет высоко!»', '"May your star stand high!"'], ['«Жолың болсын!»', '«Доброго пути!»', '"Safe travels!"'], ['«Малың көп болсын!»', '«Пусть будет много скота!»', '"May your herd be large!"']], a: 0 },
+      cat('Жұлдыз', 'Juldyz', 'sky', ['zoo', 'plant'], 0),
+      { t: 'context', q: ['Жұлдыз оюы кілемнің қай жеріне салынады?', 'Куда на ковре помещают жұлдыз?', 'Where on a carpet is the star placed?'],
+        o: [['Шетіне', 'В кайму', 'In the border'], ['Орта тұсына', 'В центр', 'In the centre'], ['Астарына', 'На изнанку', 'On the back']], a: 1 },
+    ],
+  },
+  'SKY-003': {
+    kz: 'Қос дөңгелек', tr: 'Qos döngelek', gl: ['қос дөңгелек', 'двойной круг', 'Double Ring'], art: 'qosdongelek',
+    d: ['Қос дөңгелек — ежелден сақталған геометриялық өрнек. Онымен негізінен қыз бұйымдарын, текемет пен сырмақтарды безендірген.',
+        'Двойной круг — геометрический узор, сохранившийся с древности. Им в основном украшали вещи девушек, текеметы и сырмаки.',
+        "The double ring is a geometric pattern kept since ancient times. It mainly decorated girls' belongings, felt rugs and syrmaks."],
+    s: ['Айтуынша, «қосағыңмен қоса ағар» деген ана тілегінен туған: ерлі-зайыпты бірге қартайсын.', 'По преданию, из пожелания матери «состарьтесь вместе»: чтобы супруги прожили жизнь вдвоём.', 'Legend has it that it comes from a mother\'s wish "grow old together": may the couple share a whole life.'],
+    tasks: [
+      { t: 'meaning', q: ['Қос дөңгелек қандай тілекпен байланысты?', 'С каким пожеланием связан қос дөңгелек?', 'Which wish is qos döngelek linked to?'],
+        o: [['«Қосағыңмен қоса ағар»', '«Состарьтесь вместе»', '"Grow old together"'], ['«Жолың болсын»', '«Доброго пути»', '"Safe travels"'], ['«Бала көп болсын»', '«Много детей»', '"Many children"']], a: 0 },
+      cat('Қос дөңгелек', 'Qos döngelek', 'geo', ['zoo', 'plant'], 0),
+      { t: 'context', q: ['Қос дөңгелекпен негізінен нені безендірген?', 'Что в основном украшали қос дөңгелеком?', 'What did qos döngelek mainly decorate?'],
+        o: [['Қыз бұйымдарын, текемет пен сырмақты', 'Вещи девушек, текеметы и сырмаки', "Girls' belongings, felt rugs and syrmaks"], ['Ер-тұрманды', 'Сёдла и сбрую', 'Saddles and tack'], ['Қару-жарақты', 'Оружие', 'Weapons']], a: 0 },
+    ],
+  },
+  'SKY-004': {
+    kz: 'Бес таңба', tr: 'Bes tangba', gl: ['бес таңба', 'пять знаков', 'Five Marks'], art: 'bestanba',
+    d: ['Бес таңба дүниенің төрт бұрышын шартты түрде бейнелейді. Ол алаша мен басқұр тоқуда, ағаш бұйымдарда — сандық, кереует, кебеже, асадал, жүкаяқта кездеседі.',
+        'Бес таңба условно изображает четыре стороны света. Его ткут на алашах и басқұрах и вырезают на деревянных вещах: сундуках, кроватях, кебеже, посудных полках, подставках для вещей.',
+        'Bes tangba is a symbolic image of the four corners of the world. It is woven into flat rugs and yurt bands and carved on wooden chests, beds, food chests, dish racks and stands.'],
+    s: ['Дүниенің төрт бұрышы және олардың ортасы.', 'Четыре стороны света и их центр.', 'The four corners of the world and their centre.'],
+    tasks: [
+      { t: 'meaning', q: ['Бес таңба нені бейнелейді?', 'Что изображает бес таңба?', 'What does bes tangba depict?'],
+        o: [['Дүниенің төрт бұрышын', 'Четыре стороны света', 'The four corners of the world'], ['Бес саусақты', 'Пять пальцев', 'Five fingers'], ['Бес жұлдызды', 'Пять звёзд', 'Five stars']], a: 0 },
+      cat('Бес таңба', 'Bes tangba', 'sky', ['plant', 'zoo'], 0),
+      { t: 'context', q: ['Бес таңба қандай ағаш бұйымдарда кездеседі?', 'На каких деревянных вещах встречается бес таңба?', 'Which wooden objects carry bes tangba?'],
+        o: [['Ыдыс-аяқта ғана', 'Только на посуде', 'Only on dishes'], ['Сандық, кереует, кебежеде', 'На сундуках, кроватях, кебеже', 'Chests, beds and food chests'], ['Қамшыда', 'На камчах', 'Whips']], a: 1 },
+    ],
+  },
+  'SKY-005': {
+    kz: 'Толқын', tr: 'Tolqyn', gl: ['толқын', 'волна', 'Wave'], art: 'tolqyn',
+    d: ['Толқын — жер-суға байланысты ою. Толқынды толқын итеріп, жағаға ұмтылады: алдыңғысы ағалар, кейінгісі інілер дейді. Кейде оны өзеннің тыныштығына, кейде теңіз дауылына теңеген.',
+        'Волна — узор, связанный с землёй и водой. Волна толкает волну к берегу: говорят, передние — старшие братья, задние — младшие. Её сравнивали то со спокойной рекой, то с морской бурей.',
+        'The wave is a motif of land and water. Wave pushes wave to the shore: the ones in front are the elder brothers, the ones behind the younger. It was likened both to a calm river and a stormy sea.'],
+    s: ['Тіршіліктің белгісі: «Су болса, ну болады».', 'Знак жизни: «Будет вода — будет и жизнь».', 'A sign of life: "Where there is water, there is life."'],
+    tasks: [
+      { t: 'meaning', q: ['Толқын ненің белгісі?', 'Знаком чего считается толқын?', 'What is tolqyn a sign of?'],
+        o: [['Тіршіліктің', 'Жизни', 'Life'], ['Соғыстың', 'Войны', 'War'], ['Түннің', 'Ночи', 'Night']], a: 0 },
+      cat('Толқын', 'Tolqyn', 'water', ['zoo', 'home'], 0),
+      { t: 'context', q: ['Толқын оюында алдыңғы толқындар кімге теңеледі?', 'С кем сравнивают передние волны в узоре?', 'Who are the front waves likened to?'],
+        o: [['Ағаларға', 'Со старшими братьями', 'Elder brothers'], ['Қонақтарға', 'С гостями', 'Guests'], ['Жауларға', 'С врагами', 'Enemies']], a: 0 },
+    ],
+  },
+  'SKY-006': {
+    kz: 'Ирек су', tr: 'Irek su', gl: ['ирек су', 'извилистая вода', 'Winding Water'], art: 'ireksu',
+    d: ['Ирек су кілем тоқуда, кестемен нақышталған бұйымдарда кездеседі. Онымен бұйымдардың жиегін әшекейлейді.',
+        'Извилистую воду ткут на коврах и вышивают; ею оформляют края изделий.',
+        'Winding water is woven into carpets and embroidered; it is used to finish the edges of objects.'],
+    s: ['Су — тіршілік көзі: даласы кең көшпелі ел судың қадірін білген.', 'Вода — источник жизни: кочевники широкой степи знали ей цену.', 'Water is the source of life: nomads of the wide steppe knew its worth.'],
+    tasks: [
+      { t: 'meaning', q: ['Ирек су оюы нені еске салады?', 'О чём напоминает ирек су?', 'What does irek su remind us of?'],
+        o: [['Су — тіршілік көзі екенін', 'Что вода — источник жизни', 'That water is the source of life'], ['Таудың биіктігін', 'О высоте гор', 'How high the mountains are'], ['Қыстың суығын', 'О зимнем холоде', 'The cold of winter']], a: 0 },
+      cat('Ирек су', 'Irek su', 'water', ['plant', 'zoo'], 0),
+      { t: 'context', q: ['Ирек су бұйымның қай жерін әшекейлейді?', 'Какую часть изделия украшает ирек су?', 'Which part of an object does irek su decorate?'],
+        o: [['Жиегін', 'Край', 'The edge'], ['Тек ортасын', 'Только центр', 'Only the centre'], ['Тек астарын', 'Только подкладку', 'Only the lining']], a: 0 },
+    ],
+  },
+  'SKY-007': {
+    kz: 'Қайнар', tr: 'Qainar', gl: ['қайнар', 'родник', 'Spring'], art: 'qainar',
+    d: ['Қайнар өрнегі жайылым мен суат іздеген малшылардың өлкесінде туған болса керек. Кей жерлерде оны «бұлақ» деп те атайды.',
+        'Родник, вероятно, родился у скотоводов, которые всегда искали пастбища и водопои. Кое-где его называют «бұлақ» — ключ.',
+        'The spring motif probably arose among herders always looking for pastures and watering places. In some places it is called bulaq, "a stream".'],
+    s: ['Жайылым мен судың берекесі; салқын түстер — көгілдір, көк, сия көк.', 'Благо пастбища и воды; его цвета холодные — голубой, синий, тёмно-синий.', 'The bounty of pasture and water; its colours are cool: light blue, blue and deep blue.'],
+    tasks: [
+      { t: 'meaning', q: ['Қайнар оюы қандай өмірмен байланысты?', 'С какой жизнью связан узор қайнар?', 'Which way of life is qainar tied to?'],
+        o: [['Жайылым мен суат іздеген малшылармен', 'Со скотоводами, искавшими пастбища и водопои', 'Herders seeking pastures and watering places'], ['Теңізшілермен', 'С мореходами', 'Sailors'], ['Қала саудагерлерімен', 'С городскими торговцами', 'Town merchants']], a: 0 },
+      cat('Қайнар', 'Qainar', 'water', ['home', 'zoo'], 0),
+      { t: 'context', q: ['Қайнар оюына қандай түстер тән?', 'Какие цвета характерны для қайнар?', 'Which colours suit qainar?'],
+        o: [['Қызыл мен сары', 'Красный и жёлтый', 'Red and yellow'], ['Көгілдір, көк, сия көк', 'Голубой, синий, тёмно-синий', 'Light blue, blue, deep blue'], ['Қоңыр мен қара', 'Коричневый и чёрный', 'Brown and black']], a: 1 },
+    ],
+  },
+
+  /* ---------- Module 5: yurt, tools and amulets ---------- */
+  'HOM-001': {
+    kz: 'Балта', tr: 'Balta', gl: ['балта', 'топор', 'Axe'], art: 'balta',
+    d: ['Бұл оюдың сыртқы пішіні балтаға ұқсайды. Ол кесеқап, қазанқап, көрпеқапта, тұскиіз бен төсек жапқышта, орамал кестесінде, алаша мен басқұрда кездеседі.',
+        'Очертания этого узора напоминают топор. Его вышивали на чехлах для пиал, котлов и одеял, на тұскиізах, покрывалах и платках, ткали на алашах и басқұрах.',
+        'This motif is shaped like an axe. It appears on cases for bowls, cauldrons and quilts, on wall hangings, bedspreads and headscarves, and in flat rugs and yurt bands.'],
+    s: ['Темірдің қадірі: ертеде темір өндіру қиын болғандықтан, оны табынудан туған ою.', 'Ценность железа: в старину добывать его было трудно, и узор родился из почтения к нему.', 'The worth of iron: it was once hard to obtain, and the motif grew from reverence for it.'],
+    tasks: [
+      { t: 'meaning', q: ['Балта оюы неліктен пайда болған?', 'Почему появился узор балта?', 'Why did the balta motif appear?'],
+        o: [['Темір қымбат әрі қадірлі болғандықтан', 'Потому что железо было ценным и редким', 'Because iron was precious and scarce'], ['Ағаш көп болғандықтан', 'Потому что было много леса', 'Because wood was plentiful'], ['Соғыс болғандықтан', 'Из-за войн', 'Because of wars']], a: 0 },
+      cat('Балта', 'Balta', 'home', ['plant', 'sky'], 0),
+      { t: 'context', q: ['Балта оюы қандай бұйымдарда кездеседі?', 'Где встречается балта?', 'Where do you find balta?'],
+        o: [['Тек қаруда', 'Только на оружии', 'Only on weapons'], ['Кесеқап, қазанқап, көрпеқапта', 'На чехлах для пиал, котлов и одеял', 'On cases for bowls, cauldrons and quilts'], ['Тек ер-тұрманда', 'Только на сёдлах', 'Only on saddles']], a: 1 },
+    ],
+  },
+  'HOM-002': {
+    kz: 'Қармақ', tr: 'Qarmaq', gl: ['қармақ', 'рыболовный крючок', 'Fish Hook'], art: 'qarmaq',
+    d: ['Қармақ балық шаруашылығынан алынған. Отырықшылыққа үйренген соң балық аулай бастаған халық бұл кәсіпті оюға айналдырған. Ол басқұрда, тақыр кілемде, алашада жиі кездеседі.',
+        'Крючок пришёл из рыболовства: перейдя к оседлой жизни, люди занялись ловлей рыбы, и мастера перенесли этот промысел в узор. Его часто ткут на басқұрах, безворсовых коврах и алашах.',
+        'The hook comes from fishing: when people settled and took up fishing, artisans brought the craft into ornament. It is often woven into yurt bands, flat-weave carpets and flat rugs.'],
+    s: ['Жаңа кәсіп пен ырыздық: балықшылықтың белгісі.', 'Новый промысел и достаток: знак рыболовства.', 'A new trade and a livelihood: the sign of fishing.'],
+    tasks: [
+      { t: 'meaning', q: ['Қармақ оюы қай кәсіптен алынған?', 'Из какого занятия пришёл узор қармақ?', 'Which trade did qarmaq come from?'],
+        o: [['Аңшылықтан', 'Из охоты', 'Hunting'], ['Балық аулаудан', 'Из рыболовства', 'Fishing'], ['Ұсталықтан', 'Из кузнечного дела', 'Smithing']], a: 1 },
+      cat('Қармақ', 'Qarmaq', 'home', ['sky', 'plant'], 0),
+      { t: 'context', q: ['Қармақ оюы қайда жиі кездеседі?', 'Где часто встречается қармақ?', 'Where is qarmaq often found?'],
+        o: [['Басқұр, тақыр кілем, алашада', 'На басқұрах, безворсовых коврах, алашах', 'On yurt bands, flat-weave carpets, flat rugs'], ['Сырғада', 'На серьгах', 'On earrings'], ['Қазанда', 'На котлах', 'On cauldrons']], a: 0 },
+    ],
+  },
+  'HOM-003': {
+    kz: 'Тарақ', tr: 'Taraq', gl: ['тарақ', 'гребень', 'Comb'], art: 'taraq',
+    d: ['Тарақ — геометриялық үлгідегі өрнек. Онымен безендірілген басқұрлар мен алашалар айқын да ырғақты нақышымен ерекшеленеді.',
+        'Гребень — геометрический узор. Басқұры и алаши с ним отличаются чётким, ритмичным рисунком.',
+        'The comb is a geometric motif. Yurt bands and flat rugs that carry it stand out for their clear, rhythmic design.'],
+    s: ['Тазалықтың белгісі: тарақты ертеде сиыр мүйізінен жасаған.', 'Знак чистоты: в старину гребень делали из коровьего рога.', 'A sign of cleanliness: combs were once made from cow horn.'],
+    tasks: [
+      { t: 'meaning', q: ['Тарақ ненің белгісі саналған?', 'Знаком чего считался тарақ?', 'What was taraq a sign of?'],
+        o: [['Тазалықтың', 'Чистоты', 'Cleanliness'], ['Байлықтың', 'Богатства', 'Wealth'], ['Соғыстың', 'Войны', 'War']], a: 0 },
+      cat('Тарақ', 'Taraq', 'geo', ['plant', 'sky'], 0),
+      { t: 'context', q: ['Тарақпен безендірілген басқұр қандай болады?', 'Какими становятся басқұры с тарақом?', 'What do yurt bands with taraq look like?'],
+        o: [['Айқын әрі ырғақты', 'Чёткими и ритмичными', 'Clear and rhythmic'], ['Бір түсті әрі бос', 'Одноцветными и пустыми', 'Plain and empty'], ['Тек гүлді', 'Только цветочными', 'Only floral']], a: 0 },
+    ],
+  },
+  'HOM-004': {
+    kz: 'Баспалдақ', tr: 'Baspaldaq', gl: ['баспалдақ', 'лестница', 'Steps'], art: 'baspaldaq',
+    d: ['Баспалдақ алаша мен тақыр кілемдердің ортасында орналасады, киіз үйдің сыртындағы ши өрнегінде де кездеседі.',
+        'Лестница занимает центр алаш и безворсовых ковров, её плетут и на циновке-ши снаружи юрты.',
+        'Baspaldaq sits in the centre of flat rugs and flat-weave carpets, and is also worked into the reed screen outside the yurt.'],
+    s: ['Үйдің қорғаны: есіктегі шиге оны шыбын-шіркей кірмесін, самал жел соғып тұрсын деп салған.', 'Защита дома: её плели на ши у двери, чтобы не залетали мошки, а прохладный ветер продувал.', 'Guarding the home: it was worked into the door screen to keep insects out and let a cool breeze in.'],
+    tasks: [
+      { t: 'meaning', q: ['Есіктегі шиге баспалдақты не үшін салған?', 'Зачем баспалдақ плели на ши у двери?', 'Why was baspaldaq worked into the door screen?'],
+        o: [['Шыбын-шіркей кірмесін, жел соғып тұрсын деп', 'Чтобы не залетали мошки и продувал ветер', 'To keep insects out and let a breeze in'], ['Ұрыдан қорғау үшін', 'Чтобы защититься от воров', 'To keep out thieves'], ['Жарық болсын деп', 'Чтобы было светлее', 'To let in more light']], a: 0 },
+      cat('Баспалдақ', 'Baspaldaq', 'home', ['zoo', 'plant'], 0),
+      { t: 'context', q: ['Баспалдақ алашаның қай жеріне орналасады?', 'Где на алаше располагается баспалдақ?', 'Where on a flat rug does baspaldaq go?'],
+        o: [['Ортасына', 'В центре', 'In the centre'], ['Тек бұрышына', 'Только в углу', 'Only in a corner'], ['Астарына', 'На изнанке', 'On the back']], a: 0 },
+    ],
+  },
+  'HOM-005': {
+    kz: 'Ілмек', tr: 'Ilmek', gl: ['ілмек', 'застёжка-петля', 'Clasp'], art: 'ilmek',
+    d: ['Ілмек үй тұрмысынан алынған. Ол қыз-келіншектердің бешпент, қамзол сияқты киімінде қапсырма қызметін атқарған. Кейін мал мүйізінен, бақайынан түйме жасаған, кей өңірде қайыстан да тіккен.',
+        'Ілмек пришёл из быта: на бешпентах и камзолах девушек и женщин он служил застёжкой. Позже из рога и копытной кости скота делали пуговицы, а кое-где — из кожаного ремешка.',
+        "Ilmek comes from daily life: on women's beshpent coats and waistcoats it worked as a fastening. Later buttons were made from horn and hoof bone, and in some places from leather strap."],
+    s: ['Бірлік пен байланыс: екі шетті біріктіретін қапсырма.', 'Единство и связь: застёжка, соединяющая два края.', 'Unity and connection: a clasp that joins two edges.'],
+    tasks: [
+      { t: 'meaning', q: ['Ілмек киімде қандай қызмет атқарған?', 'Какую роль ілмек играл на одежде?', 'What job did ilmek do on clothing?'],
+        o: [['Қапсырма', 'Застёжки', 'A fastening'], ['Қалта', 'Кармана', 'A pocket'], ['Жаға', 'Воротника', 'A collar']], a: 0 },
+      cat('Ілмек', 'Ilmek', 'home', ['sky', 'zoo'], 0),
+      { t: 'context', q: ['Ілмек оюы қандай бұйымдарда кездеседі?', 'Где встречается узор ілмек?', 'Where does the ilmek motif appear?'],
+        o: [['Басқұр, алаша, тақыр кілемде', 'На басқұрах, алашах, безворсовых коврах', 'Yurt bands, flat rugs, flat-weave carpets'], ['Қамшыда', 'На камчах', 'Whips'], ['Ер-тұрманда', 'На сёдлах', 'Saddles']], a: 0 },
+    ],
+  },
+  'HOM-006': {
+    kz: 'Балдақ', tr: 'Baldaq', gl: ['балдақ', 'посох', 'Staff'], art: 'baldaq',
+    d: ['Балдақ бұйымдарды әшекейлеуде, кесте тігуде қолданылады. Оюды бірнеше қатар жүргізгенде ол композицияның ортасын көмкеретін күрделі өрнекке айналады.',
+        'Балдақ используют в украшении вещей и в вышивке. Если пустить его в несколько рядов, он складывается в сложный узор, обрамляющий центр композиции.',
+        'Baldaq is used to decorate objects and in embroidery. Run in several rows, it builds a complex pattern that frames the centre of the design.'],
+    s: ['Сүйеу, тірек: қарт адам ағашқа сүйенеді — «таңертең төрт аяқпен, түсте екі, кешке үш аяқпен» деген жұмбақтағыдай.', 'Опора: старик опирается на посох — как в загадке «утром на четырёх ногах, днём на двух, вечером на трёх».', 'Support: an old man leans on a staff — as in the riddle "four legs at dawn, two at noon, three at dusk".'],
+    tasks: [
+      { t: 'meaning', q: ['Балдақ сөзінің бастауы қандай ұғым?', 'Какое понятие лежит в основе слова балдақ?', 'Which idea is at the root of baldaq?'],
+        o: [['Сүйеу, тірек', 'Опора', 'Support'], ['Жылдамдық', 'Скорость', 'Speed'], ['Байлық', 'Богатство', 'Wealth']], a: 0 },
+      cat('Балдақ', 'Baldaq', 'home', ['plant', 'water'], 0),
+      { t: 'context', q: ['Балдақты бірнеше қатар жүргізгенде не болады?', 'Что получается, если пустить балдақ в несколько рядов?', 'What happens when baldaq runs in several rows?'],
+        o: [['Ортаны көмкеретін күрделі өрнек', 'Сложный узор, обрамляющий центр', 'A complex pattern framing the centre'], ['Бос алаң', 'Пустое поле', 'An empty field'], ['Жұлдыз', 'Звезда', 'A star']], a: 0 },
+    ],
+  },
+  'HOM-007': {
+    kz: 'Тұмарша', tr: 'Tumarsha', gl: ['тұмарша', 'амулет', 'Amulet'], art: 'tumarsha',
+    d: ['Тұмарша үшбұрыш тұмар үлгісінде болады. Ол кілем бұйымдарының жиегінде, киіз бен текеметтің орта тұсын көмкеруде кездеседі.',
+        'Тұмарша повторяет форму треугольного амулета. Её ставят по краю ковровых изделий и вокруг центра войлоков и текеметов.',
+        'Tumarsha follows the shape of a triangular amulet. It runs along the edges of carpets and frames the centre of felt rugs.'],
+    s: ['Тіл-көзден сақтау: тұмарды балалардың мойнына таққан, келген қонақтың көзі өтпесін деп желбау мен басқұрға салған.', 'Защита от сглаза: такой амулет вешали детям на шею, а узор помещали на желбау и басқұр, чтобы взгляд гостя не повредил семье.', "Protection from the evil eye: such amulets hung round children's necks, and the motif went on yurt hangings so a guest's gaze would not harm the family."],
+    tasks: [
+      { t: 'meaning', q: ['Тұмарша не үшін салынған?', 'Зачем делали тұмаршу?', 'Why was tumarsha made?'],
+        o: [['Тіл-көзден сақтау үшін', 'Чтобы защитить от сглаза', 'To protect from the evil eye'], ['Жолды көрсету үшін', 'Чтобы указывать дорогу', 'To show the way'], ['Уақытты білу үшін', 'Чтобы узнавать время', 'To tell the time']], a: 0 },
+      cat('Тұмарша', 'Tumarsha', 'geo', ['zoo', 'plant'], 0),
+      { t: 'context', q: ['Тұмарды кімнің мойнына таққан?', 'Кому вешали тұмар на шею?', 'Whose neck did the amulet hang on?'],
+        o: [['Балалардың', 'Детям', "Children's"], ['Тек ақсақалдардың', 'Только старейшинам', "Only elders'"], ['Тек батырлардың', 'Только воинам', "Only warriors'"]], a: 0 },
+    ],
+  },
+  'HOM-008': {
+    kz: 'Тұйық', tr: 'Tuiyq', gl: ['тұйық', 'замкнутый узел', 'Endless Knot'], art: 'tuiyq',
+    d: ['Тұйық — геометриялық өрнек, барлық түркі тектес халықтардың ортақ оюы. Оның екінші мағынасы — тасбақа. Ертеде оны батырлардың иығына, билердің жауырынына салған.',
+        'Тұйық — геометрический узор, общий для всех тюркских народов. Второе его значение — черепаха. В старину его помещали на плечи воинов и на спину одежды биев.',
+        'Tuiyq is a geometric motif shared by all Turkic peoples. Its second meaning is "turtle". It was once placed on warriors\' shoulders and on the backs of judges\' robes.'],
+    s: ['Мәңгілік пен шексіздік; рухани биіктік пен тектіліктің бірлігі.', 'Вечность и бесконечность; духовная высота и единство рода.', 'Eternity and infinity; spiritual height and the unity of a lineage.'],
+    tasks: [
+      { t: 'meaning', q: ['Тұйық ненің символы?', 'Символом чего является тұйық?', 'What does tuiyq symbolise?'],
+        o: [['Мәңгілік пен шексіздіктің', 'Вечности и бесконечности', 'Eternity and infinity'], ['Көктемнің', 'Весны', 'Spring'], ['Саудың', 'Торговли', 'Trade']], a: 0 },
+      cat('Тұйық', 'Tuiyq', 'geo', ['plant', 'water'], 0),
+      { t: 'context', q: ['Ертеде тұйықты қайда салған?', 'Куда в старину помещали тұйық?', 'Where was tuiyq placed in the past?'],
+        o: [['Батырлардың иығына, билердің жауырынына', 'На плечи воинов и спину одежды биев', "On warriors' shoulders and judges' backs"], ['Бесікке', 'На колыбель', 'On a cradle'], ['Қазанға', 'На котёл', 'On a cauldron']], a: 0 },
+    ],
+  },
+  'HOM-009': {
+    kz: 'Қолтықша', tr: 'Qoltyqsha', gl: ['қолтықша', 'фигурка с упёртыми руками', 'Arms Akimbo'], art: 'qoltyqsha',
+    d: ['Қолтықша — геометриялық өрнек. Ол алаша, тақыр кілем, басқұрда кездеседі. Оюдың сыртқы пішінінен қозғалыс үстіндегі адамды байқаймыз.',
+        'Қолтықша — геометрический узор. Его ткут на алашах, безворсовых коврах и басқұрах. В его очертаниях угадывается человек в движении.',
+        'Qoltyqsha is a geometric motif woven into flat rugs, flat-weave carpets and yurt bands. Its outline suggests a person in motion.'],
+    s: ['Қимыл үстіндегі адам: күресте немесе билеп жүрген сәтте.', 'Человек в движении: в борьбе или в танце.', 'A person in motion: wrestling or dancing.'],
+    tasks: [
+      { t: 'meaning', q: ['Қолтықшаның пішінінен нені көреміз?', 'Что угадывается в очертаниях қолтықши?', 'What does the outline of qoltyqsha suggest?'],
+        o: [['Қозғалыстағы адамды', 'Человека в движении', 'A person in motion'], ['Тауды', 'Гору', 'A mountain'], ['Құсты', 'Птицу', 'A bird']], a: 0 },
+      cat('Қолтықша', 'Qoltyqsha', 'geo', ['zoo', 'plant'], 0),
+      { t: 'context', q: ['Қолтықша қай бұйымдарда кездеседі?', 'Где встречается қолтықша?', 'Where is qoltyqsha found?'],
+        o: [['Алаша, тақыр кілем, басқұрда', 'На алашах, безворсовых коврах, басқұрах', 'Flat rugs, flat-weave carpets, yurt bands'], ['Сақинада', 'На кольцах', 'Rings'], ['Ыдыста', 'На посуде', 'Dishes']], a: 0 },
+    ],
+  },
+};
+
+export const MORE_MODULES: Module[] = [
+  {
+    id: 3,
+    title: ['Өсімдік оюлары', 'Растительный мир', 'The Blooming Steppe'],
+    units: [
+      { title: ['Өсу', 'Рост и род', 'Growth'], lessons: ['PLT-001', 'PLT-002', 'PLT-003'] },
+      { title: ['Гүлдер', 'Цветы', 'Flowers'], lessons: ['PLT-004', 'PLT-005', 'PLT-006'] },
+      { title: ['Аңыз', 'Легенда', 'Legend'], lessons: ['PLT-007'] },
+    ],
+    checkpoint: [
+      { q: ['Әулеттің өсіп-өнуін тілейтін оюды таңда.', 'Выбери узор, желающий роду расти и продолжаться.', 'Pick the pattern that wishes a family line to grow.'], o: ['PLT-001', 'PLT-005', 'PLT-007'] },
+      { q: ['Қыз баланың төсегінің үстіндегі тұскиізге қай ою салынады?', 'Какой узор вышивают на тұскиізе над постелью девушки?', "Which pattern goes on the wall hanging above a girl's bed?"], o: ['PLT-006', 'PLT-002', 'PLT-004'] },
+      { q: ['Ғашықтарға арналған оюды тап.', 'Найди узор, посвящённый влюблённым.', 'Find the pattern dedicated to lovers.'], o: ['PLT-007', 'PLT-003', 'PLT-001'] },
+      { q: ['Бос орын қалдырмай бетті толтыратын оюды таңда.', 'Выбери узор, который заполняет поверхность без пустот.', 'Pick the pattern that fills a surface without gaps.'], o: ['PLT-004', 'PLT-006', 'PLT-002'] },
+      { q: ['Гүлдеген балалық шақты бейнелейтін оюды тап.', 'Найди узор расцветающего детства.', 'Find the pattern of a blossoming childhood.'], o: ['PLT-002', 'PLT-001', 'PLT-005'] },
+    ],
+  },
+  {
+    id: 4,
+    title: ['Аспан мен су', 'Небо и вода', 'Sky & Water'],
+    units: [
+      { title: ['Жұлдыздар', 'Звёзды', 'Stars'], lessons: ['SKY-001', 'SKY-002'] },
+      { title: ['Дүние бұрыштары', 'Круг и стороны света', 'Circles & Directions'], lessons: ['SKY-003', 'SKY-004'] },
+      { title: ['Су', 'Вода', 'Water'], lessons: ['SKY-005', 'SKY-006', 'SKY-007'] },
+    ],
+    checkpoint: [
+      { q: ['Керуеншілердің жұлдызын тап.', 'Найди звезду караванщиков.', 'Find the caravan drivers\' star.'], o: ['SKY-001', 'SKY-002', 'SKY-004'] },
+      { q: ['Жас жұбайларға «қосағыңмен қоса ағар» деп қай ою тілейді?', 'Какой узор пожелает молодым «состариться вместе»?', 'Which pattern wishes newlyweds to grow old together?'], o: ['SKY-003', 'SKY-007', 'SKY-005'] },
+      { q: ['Толқынды толқын итеріп жағаға ұмтылады. Қай ою?', 'Волна толкает волну к берегу. Какой это узор?', 'Wave pushes wave to the shore. Which pattern is it?'], o: ['SKY-005', 'SKY-006', 'SKY-001'] },
+      { q: ['Сандыққа дүниенің төрт бұрышын бейнелейтін ою ой.', 'Вырежи на сундуке узор четырёх сторон света.', 'Carve the four corners of the world on a chest.'], o: ['SKY-004', 'SKY-003', 'SKY-002'] },
+      { q: ['Малшылар жайылым мен суат іздеген. Олардың оюы қайсы?', 'Скотоводы искали пастбища и водопои. Какой узор их?', 'Herders sought pastures and watering places. Which pattern is theirs?'], o: ['SKY-007', 'SKY-005', 'SKY-006'] },
+    ],
+  },
+  {
+    id: 5,
+    title: ['Үй іші', 'Юрта и быт', 'Inside the Yurt'],
+    units: [
+      { title: ['Құралдар', 'Инструменты', 'Tools'], lessons: ['HOM-001', 'HOM-002', 'HOM-003'] },
+      { title: ['Үй', 'Дом', 'Home'], lessons: ['HOM-004', 'HOM-005', 'HOM-006'] },
+      { title: ['Тұмарлар', 'Обереги и знаки', 'Amulets & Signs'], lessons: ['HOM-007', 'HOM-008', 'HOM-009'] },
+    ],
+    checkpoint: [
+      { q: ['Темірдің қадірінен туған оюды тап.', 'Найди узор, рождённый почтением к железу.', 'Find the pattern born of reverence for iron.'], o: ['HOM-001', 'HOM-002', 'HOM-003'] },
+      { q: ['Есіктегі шиге шыбын кірмесін деп қай оюды саласың?', 'Какой узор вплести в ши у двери, чтобы не залетали мошки?', 'Which pattern goes into the door screen to keep insects out?'], o: ['HOM-004', 'HOM-005', 'HOM-008'] },
+      { q: ['Баланы тіл-көзден сақтайтын оюды таңда.', 'Выбери узор, защищающий ребёнка от сглаза.', 'Pick the pattern that guards a child from the evil eye.'], o: ['HOM-007', 'HOM-006', 'HOM-009'] },
+      { q: ['Мәңгілік пен шексіздікті бейнелейтін оюды тап.', 'Найди узор вечности и бесконечности.', 'Find the pattern of eternity and infinity.'], o: ['HOM-008', 'HOM-003', 'HOM-001'] },
+      { q: ['Қартайғанда тірек болатын затқа арналған ою қайсы?', 'Какой узор связан с опорой в старости?', 'Which pattern is about support in old age?'], o: ['HOM-006', 'HOM-004', 'HOM-002'] },
+    ],
+  },
+];

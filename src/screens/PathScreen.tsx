@@ -56,7 +56,7 @@ export function PathScreen({ c, lang, done, onOpen }: {
         const doneN = ids.filter(id => done[id]).length;
         return (
           <View key={m.id} style={styles.module}>
-            <View style={[styles.banner, { backgroundColor: m.id === 1 ? c.m1 : c.m2 }]}>
+            <View style={[styles.banner, { backgroundColor: [c.m1, c.m2, c.m3, c.m4, c.m5][(m.id - 1) % 5] }]}>
               <View style={styles.strip} pointerEvents="none">
                 <SvgXml xml={hornStripXml('#FFFFFF')} width={110} height={176} />
               </View>

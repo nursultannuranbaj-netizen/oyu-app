@@ -28,6 +28,13 @@ export const PAL: Record<string, Pal> = {
   itquyryk: ['#E9D3BA', '#1E4FA3', '#B42A34'],
   ormekshi: ['#FFF0D2', '#7A4A2E', '#D99A1E'],
   qumyrsqa: ['#FBEED6', '#7A4A2E', '#B42A34'],
+  butaq: ['#E6F2DE', '#2F6E43'], burshik: ['#FBE6E3', '#A8283A'], besjapyraq: ['#E6F2DE', '#3C7A3F'],
+  gul: ['#FFF0D2', '#B8441F'], raushan: ['#FCE4E8', '#A8283A'], tortgul: ['#E6F2DE', '#2F6E43'], aishabibi: ['#E3EEF9', '#1E5FA8'],
+  temirqazyq: ['#E1EBF8', '#1B3A7A'], juldyz: ['#E1EBF8', '#B42A34'], qosdongelek: ['#FBE6E3', '#1C2340'], bestanba: ['#F5E4D2', '#7A4A2E'],
+  tolqyn: ['#DDEFF9', '#1F6FA8'], ireksu: ['#DDEFF9', '#1B3A7A'], qainar: ['#E1F3F5', '#127C8C'],
+  balta: ['#F5E4D2', '#5A3A22'], qarmaq: ['#DDEFF9', '#1C2340'], taraq: ['#FBEBC2', '#7A4A2E'], baspaldaq: ['#F5E4D2', '#A8283A'],
+  ilmek: ['#FBE6E3', '#7A4A2E'], baldaq: ['#E9D3BA', '#3E2A1C'], tumarsha: ['#E3E8F3', '#1C2340'], tuiyq: ['#FFF0D2', '#A8283A'],
+  qoltyqsha: ['#F5E4D2', '#A8283A'],
 };
 
 /* ---------------- geometry ---------------- */
@@ -184,8 +191,9 @@ const ART: Record<string, (p: Pal) => string> = {
     [31, 63, 95].map(x => spike([0, 0], [[0, -6, 0, -12, 0, -18]], 7, { x, y: 85 }, f)).join(''),
 
   // Tüye örkesh: two camel humps rising from a band, a bud between them.
-  tuyeorkesh: ([, f]) =>
+  tuyeorkesh: ([b, f]) =>
     path('M10 98 L10 88 C17 88 20 42 39 42 C54 42 56 62 60 70 C64 62 66 42 81 42 C100 42 103 88 110 88 L110 98 Z', f) +
+    bud({ x: 39, y: 84, s: 0.95 }, b) + bud({ x: 81, y: 84, s: 0.95 }, b) +
     bud({ x: 60, y: 72, s: 0.75 }, f),
 
   // Tüye taban: four camel footprints (two-toed hearts) around a diamond.
@@ -304,16 +312,16 @@ const ART: Record<string, (p: Pal) => string> = {
     return s;
   },
 
-  // Örmekshi: a spider — round body, eight jointed legs.
+  // Örmekshi: the spider as an ornament — a rhombic body with horn-curl legs on the four diagonals.
   ormekshi: ([b, f]) => {
     let s = '';
-    for (const flip of [false, true]) {
-      [-42, -14, 14, 42].forEach(rot => {
-        const sx = flip ? -1 : 1;
-        s += spike([0, 0], [[9, -5, 18, -11, 26, -13], [31, -14, 35, -10, 36, -1]], 7.5, { x: 60 + sx * 8, y: 64, rot: (flip ? -1 : 1) * rot, sx }, f);
-      });
+    for (let k = 0; k < 4; k++) {
+      const ang = ((k * 90 + 45) * Math.PI) / 180;
+      s += coilPair({ a0: 180, cx: 15, cy: -13, R0: 15, R1: 5, turns: 0.9, w0: 11, w: 9, knob: 5.6, lead: [0, -4, 0, -8] },
+        { x: 60 + Math.sin(ang) * 17, y: 62 - Math.cos(ang) * 17, rot: k * 90 + 45, s: 0.72 }, f);
     }
-    return s + `<ellipse cx="60" cy="72" rx="13" ry="16" fill="${f}"/>` + circle(60, 50, 8.5, f) + diamond(60, 72, 4.5, b);
+    return s + poly([[60, 40], [76, 62], [60, 88], [44, 62]], f) + poly([[60, 50], [68, 62], [60, 76], [52, 62]], b) +
+      diamond(60, 62, 3.5, f) + diamond(60, 31, 7, f);
   },
 
   // Qumyrsqa: the ant — an angular cross whose arms end in hooks, around a diamond.
@@ -323,6 +331,203 @@ const ART: Record<string, (p: Pal) => string> = {
     for (const pts of [arm, mirrorX(arm), mirrorY(arm), mirrorX(mirrorY(arm))]) s += bar(pts, 9, f);
     return s + diamond(60, 60, 14, f) + diamond(60, 60, 5, b);
   },
+
+  /* ---------- Module 3: plants ---------- */
+
+  // Butaq: a stem with paired leaves, roots curling at its foot and a bud at its top.
+  butaq: ([, f]) => {
+    const leaf = chain([0, 0], [[6, -9, 18, -15, 30, -14], [22, -4, 11, 0, 0, 0]], 12);
+    let s = rect(56.5, 30, 7, 70, f, 3);
+    [[90, 1.05], [72, 0.95], [54, 0.8]].forEach(([y, k]) => {
+      s += poly(xf(leaf, { x: 62, y, s: k }), f) + poly(xf(leaf, { x: 58, y, s: k, sx: -1 }), f);
+    });
+    return s + coilPair({ cx: 12, cy: 9, R0: 9, R1: 3.5, turns: 0.85, w0: 7, w: 7, knob: 4.4, lead: [3, -1, 6, 0] }, { x: 60, y: 98 }, f) + bud({ x: 60, y: 34, s: 0.75 }, f);
+  },
+
+  // Bürshik: a large tulip bud cupped by two leaves, small curls at the stem foot.
+  burshik: ([b, f]) =>
+    spike([0, 0], [[0, 10, 0, 22, 0, 32]], 11, { x: 60, y: 70 }, f) +
+    spike([0, 0], [[-8, -4, -20, -14, -24, -34]], 12, { x: 57, y: 88 }, f) + spike([0, 0], [[8, -4, 20, -14, 24, -34]], 12, { x: 63, y: 88 }, f) +
+    bud({ x: 60, y: 74, s: 1.65 }, f) + bud({ x: 60, y: 64, s: 0.75 }, b) +
+    coilPair({ cx: 12, cy: 9, R0: 9, R1: 3.5, turns: 0.85, w0: 7, w: 7, knob: 4.4, lead: [3, -1, 6, 0] }, { x: 60, y: 98 }, f),
+
+  // Besjapyraq: five pointed leaves round a pierced centre.
+  besjapyraq: ([b, f]) => {
+    const leaf = chain([0, 0], [[-13, -9, -13, -28, 0, -40], [13, -28, 13, -9, 0, 0]], 14);
+    let s = '';
+    for (let k = 0; k < 5; k++) s += poly(xf(leaf, { x: 60 + Math.sin((k * 72 * Math.PI) / 180) * 8, y: 62 - Math.cos((k * 72 * Math.PI) / 180) * 8, rot: k * 72 }), f);
+    for (let k = 0; k < 5; k++) { const a = ((k * 72 + 36) * Math.PI) / 180; s += diamond(60 + Math.sin(a) * 30, 62 - Math.cos(a) * 30, 3.5, f); }
+    return s + circle(60, 62, 11, f) + circle(60, 62, 4.5, b);
+  },
+
+  // Gül: an eight-petalled flower filling its whole field.
+  gul: ([b, f]) => {
+    const petal = chain([0, 0], [[-11, -6, -14, -22, -6, -32], [-3, -36, 3, -36, 6, -32], [14, -22, 11, -6, 0, 0]], 12);
+    let s = '';
+    for (let k = 0; k < 8; k++) s += poly(xf(petal, { x: 60, y: 60, rot: k * 45 }), f);
+    for (let k = 0; k < 8; k++) s += poly(xf(chain([0, 0], [[-4, -4, -5, -12, 0, -18], [5, -12, 4, -4, 0, 0]], 8), { x: 60, y: 60, rot: k * 45 + 22.5, s: 1 }), b);
+    return s + circle(60, 60, 9, f) + circle(60, 60, 3.5, b);
+  },
+
+  // Raushan gül: a rose — an outer ring of broad petals, an inner ring cut out, a solid heart.
+  raushan: ([b, f]) => {
+    const petal = chain([0, 0], [[-16, -6, -20, -28, -8, -38], [-4, -42, 4, -42, 8, -38], [20, -28, 16, -6, 0, 0]], 12);
+    let s = '';
+    for (let k = 0; k < 6; k++) s += poly(xf(petal, { x: 60, y: 60, rot: k * 60 }), f);
+    for (let k = 0; k < 6; k++) s += poly(xf(petal, { x: 60, y: 60, rot: k * 60 + 30, s: 0.55 }), b);
+    for (let k = 0; k < 6; k++) s += poly(xf(petal, { x: 60, y: 60, rot: k * 60, s: 0.3 }), f);
+    return s + circle(60, 60, 5, f);
+  },
+
+  // Törtgül: four tulips turned to the four sides, leaves between them.
+  tortgul: ([b, f]) => {
+    let s = '';
+    for (let k = 0; k < 4; k++) {
+      const a = (k * 90 * Math.PI) / 180;
+      s += bud({ x: 60 + Math.sin(a) * 14, y: 60 - Math.cos(a) * 14, rot: k * 90, s: 1.05 }, f);
+      const d = ((k * 90 + 45) * Math.PI) / 180;
+      s += spike([0, 0], [[0, -8, 2, -16, 0, -24]], 9, { x: 60 + Math.sin(d) * 10, y: 60 - Math.cos(d) * 10, rot: k * 90 + 45 }, f);
+    }
+    return s + poly([[60, 46], [74, 60], [60, 74], [46, 60]], f) + diamond(60, 60, 5, b);
+  },
+
+  // Aisha Bibi: a pointed arch, as on the mausoleum's carved walls, holding a closed bud.
+  aishabibi: ([b, f]) =>
+    path('M26 106 L26 54 C26 34 46 20 60 10 C74 20 94 34 94 54 L94 106 Z', f) +
+    path('M34 98 L34 56 C34 40 50 28 60 20 C70 28 86 40 86 56 L86 98 Z', b) +
+    spike([0, 0], [[0, 12, 0, 26, 0, 38]], 10, { x: 60, y: 58 }, f) +
+    bud({ x: 60, y: 62, s: 1.05 }, f) +
+    coilPair({ cx: 11, cy: 9, R0: 10, R1: 4, turns: 0.85, w0: 7, w: 8, knob: 5, lead: [3, -2, 6, 0] }, { x: 60, y: 76 }, f) +
+    spike([0, 0], [[-5, -2, -12, -6, -15, -14]], 7, { x: 59, y: 92 }, f) + spike([0, 0], [[5, -2, 12, -6, 15, -14]], 7, { x: 61, y: 92 }, f),
+
+  /* ---------- Module 4: sky and water ---------- */
+
+  // Temirqazyq: the Pole Star — an eight-pointed star of two squares around a ringed centre.
+  temirqazyq: ([b, f]) => {
+    const sq = (r: number, rot: number) => poly(xf([[-r, -r], [r, -r], [r, r], [-r, r]], { x: 60, y: 60, rot }), f);
+    return sq(30, 0) + sq(30, 45) + circle(60, 60, 18, b) + circle(60, 60, 12, f) + circle(60, 60, 5, b) +
+      [0, 1, 2, 3].map(k => diamond(60 + [0, 46, 0, -46][k], 60 + [-46, 0, 46, 0][k], 5, f)).join('');
+  },
+
+  // Juldyz: a star of four long and four short sharp rays.
+  juldyz: ([b, f]) => {
+    const pts: P[] = [];
+    for (let k = 0; k < 16; k++) {
+      const r = k % 2 ? 11 : k % 4 === 0 ? 48 : 30;
+      const a = ((k * 22.5 - 90) * Math.PI) / 180;
+      pts.push([60 + r * Math.cos(a), 60 + r * Math.sin(a)]);
+    }
+    return poly(pts, f) + diamond(60, 60, 7, b) + diamond(60, 60, 3, f);
+  },
+
+  // Qos döngelek: two thick rings linked together.
+  qosdongelek: ([b, f]) =>
+    `<circle cx="44" cy="60" r="22" fill="none" stroke="${f}" stroke-width="11"/>` +
+    `<circle cx="76" cy="60" r="22" fill="none" stroke="${f}" stroke-width="11"/>` +
+    `<path d="M63.1 71 A22 22 0 0 1 56.3 78.2" fill="none" stroke="${b}" stroke-width="16"/>` +
+    `<path d="M62.4 72 A22 22 0 0 1 55.4 78.8" fill="none" stroke="${f}" stroke-width="11"/>` +
+    diamond(60, 60, 4, f),
+
+  // Bes tangba: five marks — four corners and a centre joined by a cross.
+  bestanba: ([b, f]) =>
+    bar([[60, 22], [60, 98]], 6, f) + bar([[22, 60], [98, 60]], 6, f) +
+    [[60, 22], [98, 60], [60, 98], [22, 60]].map(([x, y]) => diamond(x, y, 12, f) + diamond(x, y, 4, b)).join('') +
+    diamond(60, 60, 18, f) + diamond(60, 60, 9, b) + diamond(60, 60, 4, f),
+
+  // Tolqyn: waves rolling to the shore, each crest curling forward.
+  tolqyn: ([, f]) => {
+    const c: Coil = { a0: 180, cx: 14, cy: -22, R0: 14, R1: 5, turns: 0.9, w0: 18, w: 7.5, knob: 4.8, lead: [0, -6, 0, -12] };
+    return rect(8, 84, 104, 20, f, 3) + [12, 44, 76].map(x => coil(c, { x, y: 88, rot: 22 }, f)).join('');
+  },
+
+  // Irek su: two winding streams between banks.
+  ireksu: ([, f]) =>
+    rect(8, 18, 104, 6, f, 2) + rect(8, 96, 104, 6, f, 2) +
+    `<path d="M8 46 C20 30 32 30 44 46 S68 62 80 46 S104 30 112 40" fill="none" stroke="${f}" stroke-width="9" stroke-linecap="round"/>` +
+    `<path d="M8 74 C20 58 32 58 44 74 S68 90 80 74 S104 58 112 68" fill="none" stroke="${f}" stroke-width="9" stroke-linecap="round"/>`,
+
+  // Qainar: a spring — four curls whirling out of a source.
+  qainar: ([b, f]) => {
+    let s = '';
+    for (let k = 0; k < 4; k++)
+      s += coil({ cx: 18, cy: 14, R0: 15, R1: 5, turns: 0.9, w0: 9, w: 10, knob: 6, lead: [5, 0, 12, -1] }, { x: 60, y: 60, rot: k * 90 }, f);
+    return s + circle(60, 60, 10, f) + circle(60, 60, 4, b);
+  },
+
+  /* ---------- Module 5: yurt, tools, amulets ---------- */
+
+  // Balta: a double axe head on a handle, bud on top, forked foot.
+  balta: ([, f]) =>
+    rect(56, 30, 8, 66, f, 2) +
+    path('M64 34 C78 32 88 34 98 24 C102 42 102 60 98 78 C88 68 78 70 64 68 Z', f) +
+    path('M56 34 C42 32 32 34 22 24 C18 42 18 60 22 78 C32 68 42 70 56 68 Z', f) +
+    bud({ x: 60, y: 32, s: 0.7 }, f) +
+    spike([0, 0], [[-2, 5, -7, 9, -13, 10]], 8, { x: 59, y: 94 }, f) + spike([0, 0], [[2, 5, 7, 9, 13, 10]], 8, { x: 61, y: 94 }, f),
+
+  // Qarmaq: two fish hooks back to back on one shank, with barbs.
+  qarmaq: ([b, f]) =>
+    rect(56, 30, 8, 46, f, 2) + `<circle cx="60" cy="24" r="8" fill="none" stroke="${f}" stroke-width="5"/>` +
+    spike([0, 0], [[0, 16, 10, 28, 22, 28], [32, 28, 36, 16, 33, 4]], 10, { x: 61, y: 70 }, f) +
+    spike([0, 0], [[0, 16, -10, 28, -22, 28], [-32, 28, -36, 16, -33, 4]], 10, { x: 59, y: 70 }, f) +
+    poly([[94, 74], [86, 84], [93, 86]], f) + poly([[26, 74], [34, 84], [27, 86]], f) + diamond(60, 52, 3, b),
+
+  // Taraq: a double-sided comb, teeth pointing up and down from a central bar.
+  taraq: ([b, f]) => {
+    let s = rect(14, 52, 92, 16, f, 3);
+    for (let i = 0; i < 9; i++) {
+      const x = 19 + i * 10.25;
+      s += poly([[x - 4, 53], [x + 4, 53], [x, 22]], f) + poly([[x - 4, 67], [x + 4, 67], [x, 98]], f);
+    }
+    return s + [30, 60, 90].map(x => diamond(x, 60, 4, b)).join('');
+  },
+
+  // Baspaldaq: a stepped rhombus — the ladder — with a stepped core.
+  baspaldaq: ([b, f]) => {
+    const stepped = (r: number, st: number) => {
+      const pts: P[] = [];
+      const n = Math.round(r / st);
+      for (let i = 0; i < n; i++) pts.push([60 + i * st, 60 - r + i * st], [60 + (i + 1) * st, 60 - r + i * st]);
+      return pts;
+    };
+    const quad = (r: number, st: number) => {
+      const q = stepped(r, st);
+      return [...q, ...q.map(([x, y]) => [x, 120 - y] as P).reverse(), ...q.map(([x, y]) => [120 - x, 120 - y] as P), ...q.map(([x, y]) => [120 - x, y] as P).reverse()];
+    };
+    return poly(quad(48, 8), f) + poly(quad(32, 8), b) + poly(quad(16, 8), f) + diamond(60, 60, 4, b);
+  },
+
+  // Ilmek: two hooks catching each other — a clasp.
+  ilmek: ([b, f]) =>
+    rect(14, 54, 38, 12, f, 4) + `<circle cx="60" cy="60" r="12" fill="none" stroke="${f}" stroke-width="7"/>` +
+    rect(68, 54, 38, 12, f, 4) + rect(57, 57, 14, 6, f, 2) + circle(61, 60, 6.5, f) + circle(61, 60, 2.2, b) +
+    coilPair({ a0: 180, cx: 10, cy: -10, R0: 10, R1: 3.5, turns: 0.9, w0: 8, w: 7, knob: 4.4, lead: [0, -3, 0, -6] }, { x: 24, y: 54 }, f) +
+    coilPair({ a0: 180, cx: 10, cy: -10, R0: 10, R1: 3.5, turns: 0.9, w0: 8, w: 7, knob: 4.4, lead: [0, -3, 0, -6] }, { x: 96, y: 66, sy: -1 }, f),
+
+  // Baldaq: a staff whose crossbar ends in two down-curling hooks.
+  baldaq: ([, f]) =>
+    rect(55.5, 30, 9, 70, f, 3) +
+    coilPair({ cx: 30, cy: 10, R0: 10, R1: 4, turns: 0.85, w0: 9, w: 9, knob: 5.5, lead: [10, 0, 20, 0] }, { x: 60, y: 30 }, f) +
+    bud({ x: 60, y: 28, s: 0.7 }, f) +
+    spike([0, 0], [[-2, 5, -7, 9, -13, 10]], 9, { x: 59, y: 96 }, f) + spike([0, 0], [[2, 5, 7, 9, 13, 10]], 9, { x: 61, y: 96 }, f),
+
+  // Tumarsha: a triangular amulet hanging from its tube, with pendants.
+  tumarsha: ([b, f]) =>
+    rect(24, 26, 72, 11, f, 5) + circle(24, 31.5, 7, f) + circle(96, 31.5, 7, f) +
+    poly([[28, 42], [92, 42], [60, 92]], f) + poly([[40, 49], [80, 49], [60, 80]], b) + poly([[50, 55], [70, 55], [60, 70]], f) +
+    poly([[24, 40], [28, 52], [24, 62], [20, 52]], f) + poly([[96, 40], [100, 52], [96, 62], [92, 52]], f) +
+    poly([[60, 94], [64, 102], [60, 110], [56, 102]], f),
+
+  // Tuiyq: a closed, endless figure — a rhombus looped at each corner.
+  tuiyq: ([, f]) =>
+    `<path d="M60 26 L94 60 L60 94 L26 60 Z" fill="none" stroke="${f}" stroke-width="9" stroke-linejoin="round"/>` +
+    [[60, 18], [102, 60], [60, 102], [18, 60]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="9" fill="none" stroke="${f}" stroke-width="7"/>`).join('') +
+    `<path d="M60 42 L78 60 L60 78 L42 60 Z" fill="none" stroke="${f}" stroke-width="7" stroke-linejoin="round"/>` + diamond(60, 60, 5, f),
+
+  // Qoltyqsha: an angular figure with arms akimbo — a person in motion.
+  qoltyqsha: ([, f]) =>
+    diamond(60, 24, 9, f) + rect(53, 36, 14, 44, f, 2) +
+    bar([[53, 44], [32, 60], [52, 74]], 8, f) + bar([[67, 44], [88, 60], [68, 74]], 8, f) +
+    bar([[56, 80], [42, 100], [30, 100]], 8, f) + bar([[64, 80], [78, 100], [90, 100]], 8, f),
 };
 
 const cache: Record<string, string> = {};

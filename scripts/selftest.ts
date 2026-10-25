@@ -33,8 +33,9 @@ test('ornament SVG renders to non-empty markup', () => {
 
 console.log('Lesson engine');
 let seed = 7; const rng = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-test('path order: 19 lessons + 2 checkpoints, only the first is open at start', () => {
-  assert.equal(L.ORDER.length, 21);
+test('path order: 42 lessons + 5 checkpoints, only the first is open at start', () => {
+  assert.equal(L.ORDER.length, 47);
+  assert.equal(Object.keys(COURSE.orn).length, 42);
   assert.equal(L.currentNode({}), 'ZOO-001');
   assert.ok(!L.isUnlocked('ZOO-002', {}));
   assert.ok(L.isUnlocked('ZOO-002', { 'ZOO-001': true }));

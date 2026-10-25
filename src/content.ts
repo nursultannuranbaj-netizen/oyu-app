@@ -10,6 +10,8 @@ export interface Unit { title: Tri; lessons: string[] }
 export interface Module { id: number; title: Tri; units: Unit[]; checkpoint: CheckpointItem[] }
 export interface Course { modules: Module[]; orn: Record<string, Ornament> }
 
+import { MORE_MODULES, MORE_ORN } from './content_more';
+
 export const COURSE: Course = {
   modules: [
     {
@@ -335,3 +337,6 @@ export const COURSE: Course = {
     }
   }
 };
+
+COURSE.modules.push(...MORE_MODULES);
+Object.assign(COURSE.orn, MORE_ORN);
