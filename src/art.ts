@@ -265,15 +265,14 @@ const ART: Record<string, (p: Pal) => string> = {
   },
 
   // Qus qanaty: two curls facing the centre under a bud, long pointed wings sweeping out.
-  qanat: ([, f, a]) =>
-    spike([0, 0], [[-14, -2, -32, 4, -50, 18]], 17, { x: 52, y: 70 }, f) +
-    spike([0, 0], [[14, -2, 32, 4, 50, 18]], 17, { x: 68, y: 70 }, f) +
-    spike([0, 0], [[-10, 6, -24, 14, -34, 30]], 11, { x: 50, y: 78 }, a) +
-    spike([0, 0], [[10, 6, 24, 14, 34, 30]], 11, { x: 70, y: 78 }, a) +
-    coil({ a0: 180, cx: 16, cy: -12, R0: 16, R1: 5.5, turns: 0.9, w0: 11, w: 9, knob: 6, lead: [0, -4, 0, -8] }, { x: 27, y: 78 }, f) +
-    coil({ a0: 180, cx: 16, cy: -12, R0: 16, R1: 5.5, turns: 0.9, w0: 11, w: 9, knob: 6, lead: [0, -4, 0, -8] }, { x: 93, y: 78, flip: true }, f) +
-    spike([0, 0], [[0, 10, 0, 22, 0, 34]], 15, { x: 60, y: 54 }, f) +
-    bud({ x: 60, y: 54, s: 0.9 }, f),
+  qanat: ([, f]) =>
+    path('M58 74 C46 74 30 70 22 58 C16 50 14 40 12 28 C22 40 32 48 44 52 C52 55 56 60 58 66 Z', f) +
+    path('M62 74 C74 74 90 70 98 58 C104 50 106 40 108 28 C98 40 88 48 76 52 C68 55 64 60 62 66 Z', f) +
+    coilPair({ cx: 14, cy: 15, R0: 14, R1: 6, turns: 0.85, w0: 10, w: 10, knob: 6.2, lead: [3, -3, 8, 1] }, { x: 60, y: 76 }, f) +
+    spike([0, 0], [[0, 16, 0, 32, 0, 48]], 13, { x: 60, y: 50 }, f) +
+    spike([0, 0], [[5, 0, 10, -2, 13, -8]], 7, { x: 60, y: 52 }, f) +
+    spike([0, 0], [[-5, 0, -10, -2, -13, -8]], 7, { x: 60, y: 52 }, f) +
+    bud({ x: 60, y: 50, s: 0.8 }, f),
 
   // Qarlyghash: a swallow seen from above: swept wings, deep forked tail.
   qarlygash: ([b, f]) =>
@@ -298,10 +297,11 @@ const ART: Record<string, (p: Pal) => string> = {
 
   // It quyryq: curled dog's tails rising and hanging along a carved band.
   itquyryk: ([, f]) => {
-    const c: Coil = { a0: 180, cx: 14, cy: -16, R0: 14, R1: 4.5, turns: 0.9, w0: 10, w: 8, knob: 5.4, lead: [0, -6, 0, -12] };
-    return rect(8, 88, 104, 8, f, 2) + rect(8, 24, 104, 8, f, 2) +
-      [12, 64].map(x => coil(c, { x, y: 89 }, f)).join('') +
-      [38, 90].map(x => coil(c, { x, y: 31, sy: -1 }, f)).join('');
+    const c: Coil = { a0: 180, cx: 10, cy: -14, R0: 10, R1: 3.5, turns: 0.85, w0: 13, w: 5.5, knob: 3.8, lead: [0, -5, 0, -10] };
+    let s = rect(8, 90, 104, 6, f, 2) + rect(8, 24, 104, 6, f, 2);
+    [10, 36, 62, 88].forEach((x, i) => { s += i % 2 ? coil(c, { x: x + 2, y: 32, sy: -1 }, f) : coil(c, { x: x + 2, y: 88 }, f); });
+    for (let k = 0; k < 4; k++) s += circle(25 + k * 26, k % 2 ? 76 : 44, 2.4, f);
+    return s;
   },
 
   // Örmekshi: a spider — round body, eight jointed legs.

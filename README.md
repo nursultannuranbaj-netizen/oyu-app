@@ -83,6 +83,17 @@ scripts/selftest.ts        проверки контента и логики: np
 
 Сейчас орнаменты нарисованы простыми векторными формами в `src/art.ts`. Финальные иллюстрации делаются по промтам из документа курса и перерисовываются в SVG. Чтобы заменить картинку, верните её SVG-разметку из функции нужного орнамента в `ART` (поле зрения 120×120) или переключите компонент `Ornament` в `src/components/ui.tsx` на файлы изображений.
 
+## Источники для иллюстраций и смыслов
+
+Иллюстрации нарисованы в коде (`src/art.ts`), чужие изображения в приложение не встроены. Формы сверялись с открытыми образцами:
+
+- «Құс қанаты», табличка — [Kazakh ornaments.jpg](https://commons.wikimedia.org/wiki/File:Kazakh_ornaments.jpg), Akbota Bakyt, CC BY-SA 4.0
+- Войлочные ковры, Западный Казахстан, начало XX в. — [фото 1](https://commons.wikimedia.org/wiki/File:%D0%9A%D0%B0%D0%B7%D0%B0%D1%85%D1%81%D0%BA%D0%B8%D0%B9_%D0%B2%D0%BE%D0%B9%D0%BB%D0%BE%D1%87%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D0%B2%D0%B5%D1%80._%D0%97%D0%B0%D0%BF%D0%B0%D0%B4%D0%BD%D1%8B%D0%B9_%D0%9A%D0%B0%D0%B7%D0%B0%D1%85%D1%81%D1%82%D0%B0%D0%BD._%D0%9D%D0%B0%D1%87%D0%B0%D0%BB%D0%BE_20_%D0%B2.jpg), [фото 2](https://commons.wikimedia.org/wiki/File:%D0%9A%D0%B0%D0%B7%D0%B0%D1%85%D1%81%D0%BA%D0%B8%D0%B9_%D0%B2%D0%BE%D0%B9%D0%BB%D0%BE%D1%87%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D0%B2%D0%B5%D1%80.jpg), «Книжная пыль», CC BY 4.0
+- Дверь юрты, XIX в. — [фрагмент](https://commons.wikimedia.org/wiki/File:%D0%94%D0%B2%D0%B5%D1%80%D1%8C_%D1%8E%D1%80%D1%82%D1%8B_%D0%A4%D1%80%D0%B0%D0%B3%D0%BC%D0%B5%D0%BD%D1%82_01.jpg), «Книжная пыль», CC BY-SA 4.0
+- Сырмақ и басқұр — [Syrmaq](https://commons.wikimedia.org/wiki/File:Syrmaq._Kazakh_carpet.jpg), [Aq baskur](https://commons.wikimedia.org/wiki/File:Aq_-_baskur.jpg), CC0
+
+Смыслы сверены с: Шайгозова Ж., Наурызбаева А. «Знаки и символы казахской культуры. Краткая энциклопедия», 2023 ([cultural.kz](https://cultural.kz/?p=3596)); [artandcrafts.cultural.kz](https://artandcrafts.cultural.kz/en/%D2%9Bosh%D2%9Bar-m%D2%AFjiz-barani-roga-%D2%9Bos-m%D2%AFjiz-parnye-roga-sy%D2%A3ar-m%D2%AFjiz-odin-rog/); [Kazakh ornaments — Wikipedia](https://en.wikipedia.org/wiki/Kazakh_ornaments).
+
 ## Что дальше
 
 - модули 3–9 по карте курса;
